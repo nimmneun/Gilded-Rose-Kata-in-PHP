@@ -17,7 +17,8 @@ class GildedRose
         $this->sellIn = $sellIn;
     }
 
-    public static function of($name, $quality, $sellIn) {
+    public static function of($name, $quality, $sellIn)
+    {
         return new static($name, $quality, $sellIn);
     }
 
@@ -27,34 +28,48 @@ class GildedRose
             return;
         }
 
-        if ($this->name != 'Aged Brie' and $this->name != 'Backstage passes to a TAFKAL80ETC concert') {
-            $this->lowerQuality();
-        } else {
+        // aged bree logic
+        if ($this->name == 'Aged Brie') {
+
+            $this->raiseQuality();
+            $this->sellIn--;
+
+            if ($this->sellIn < 0) {
+                $this->raiseQuality();
+            }
+
+            return;
+        }
+
+        // backstage pass logic
+        if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
             $this->raiseQuality();
 
             if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
                 if ($this->sellIn < 11) {
                     $this->raiseQuality();
                 }
-
                 if ($this->sellIn < 6) {
                     $this->raiseQuality();
                 }
             }
+
+            $this->sellIn--;
+
+            if ($this->sellIn < 0) {
+                $this->quality = 0;
+            }
+
+            return;
         }
+
+        // entire default item logic
+        $this->lowerQuality();
 
         $this->sellIn--;
 
         if ($this->sellIn < 0) {
-            if ($this->name != 'Aged Brie') {
-                if ($this->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                    $this->lowerQuality();
-                } else {
-                    $this->quality = $this->quality - $this->quality;
-                }
-            } else {
-                $this->raiseQuality();
-            }
+            $this->lowerQuality();
         }
     }
 
