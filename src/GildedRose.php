@@ -23,51 +23,52 @@ class GildedRose
 
     public function tick()
     {
+        if ($this->name == 'Sulfuras, Hand of Ragnaros') {
+            return;
+        }
+
         if ($this->name != 'Aged Brie' and $this->name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if ($this->quality > 0) {
-                if ($this->name != 'Sulfuras, Hand of Ragnaros') {
-                    $this->quality = $this->quality - 1;
-                }
-            }
+            $this->lowerQuality();
         } else {
-            if ($this->quality < 50) {
-                $this->quality = $this->quality + 1;
+            $this->raiseQuality();
 
-                if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
-                    if ($this->sellIn < 11) {
-                        if ($this->quality < 50) {
-                            $this->quality = $this->quality + 1;
-                        }
-                    }
-                    if ($this->sellIn < 6) {
-                        if ($this->quality < 50) {
-                            $this->quality = $this->quality + 1;
-                        }
-                    }
+            if ($this->name == 'Backstage passes to a TAFKAL80ETC concert') {
+                if ($this->sellIn < 11) {
+                    $this->raiseQuality();
+                }
+
+                if ($this->sellIn < 6) {
+                    $this->raiseQuality();
                 }
             }
         }
 
-        if ($this->name != 'Sulfuras, Hand of Ragnaros') {
-            $this->sellIn = $this->sellIn - 1;
-        }
+        $this->sellIn--;
 
         if ($this->sellIn < 0) {
             if ($this->name != 'Aged Brie') {
                 if ($this->name != 'Backstage passes to a TAFKAL80ETC concert') {
-                    if ($this->quality > 0) {
-                        if ($this->name != 'Sulfuras, Hand of Ragnaros') {
-                            $this->quality = $this->quality - 1;
-                        }
-                    }
+                    $this->lowerQuality();
                 } else {
                     $this->quality = $this->quality - $this->quality;
                 }
             } else {
-                if ($this->quality < 50) {
-                    $this->quality = $this->quality + 1;
-                }
+                $this->raiseQuality();
             }
+        }
+    }
+
+    private function raiseQuality()
+    {
+        if ($this->quality < 50) {
+            $this->quality++;
+        }
+    }
+
+    private function lowerQuality()
+    {
+        if ($this->quality > 0) {
+            $this->quality--;
         }
     }
 }
