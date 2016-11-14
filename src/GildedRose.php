@@ -27,42 +27,53 @@ class GildedRose
         switch ($this->name) {
             case 'Sulfuras, Hand of Ragnaros':
                 break;
-
             case 'Aged Brie':
-                $this->raiseQuality();
-                $this->sellIn--;
-                if ($this->sellIn < 0) {
-                    $this->raiseQuality();
-                }
+                $this->tickAgedBrie();
                 break;
-
             case 'Backstage passes to a TAFKAL80ETC concert':
-                $this->raiseQuality();
-
-                if ($this->sellIn < 11) {
-                    $this->raiseQuality();
-                }
-
-                if ($this->sellIn < 6) {
-                    $this->raiseQuality();
-                }
-
-                $this->sellIn--;
-
-                if ($this->sellIn < 0) {
-                    $this->quality = 0;
-                }
+                $this->tickBackstagePass();
                 break;
-
             default:
-                $this->lowerQuality();
+                $this->tickDefault();
+        }
+    }
 
-                $this->sellIn--;
+    private function tickAgedBrie()
+    {
+        $this->raiseQuality();
+        $this->sellIn--;
+        if ($this->sellIn < 0) {
+            $this->raiseQuality();
+        }
+    }
 
-                if ($this->sellIn < 0) {
-                    $this->lowerQuality();
-                }
+    private function tickBackstagePass()
+    {
+        $this->raiseQuality();
 
+        if ($this->sellIn < 11) {
+            $this->raiseQuality();
+        }
+
+        if ($this->sellIn < 6) {
+            $this->raiseQuality();
+        }
+
+        $this->sellIn--;
+
+        if ($this->sellIn < 0) {
+            $this->quality = 0;
+        }
+    }
+
+    private function tickDefault()
+    {
+        $this->lowerQuality();
+
+        $this->sellIn--;
+
+        if ($this->sellIn < 0) {
+            $this->lowerQuality();
         }
     }
 
