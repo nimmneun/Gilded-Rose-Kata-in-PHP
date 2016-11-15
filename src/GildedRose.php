@@ -26,6 +26,7 @@ class GildedRose
     {
         switch ($this->name) {
             case 'Sulfuras, Hand of Ragnaros':
+                $this->sellIn--;
                 break;
             case 'Aged Brie':
                 $this->tickAgedBrie();
